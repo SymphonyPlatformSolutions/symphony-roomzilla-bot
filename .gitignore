@@ -1,0 +1,5 @@
+node_modules/
+certs/
+api/ldapAPI.js
+config/config.js
+.env
