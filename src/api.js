@@ -8,12 +8,12 @@ const csv = require('fast-csv');
 const MailParser = require("mailparser-mit").MailParser;
 const fs = require('fs');
 const RETRY_LIMIT = 5
-const RETRY_TIMER_DELAY = [5000, 15000, 30000, 60000, 300000] //ms
+const RETRY_TIMER_DELAY = [60000, 300000, 600000, 1800000, 3600000] //ms
 
 let authenticated = false
 let TempDataStore = {};
 var emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/; // used for CSV parsing
-//var emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi
+var AdRegex = /(\/create)\s(.+)\s(\/group)\s(.+)/gi;
 
 let Api = {
     async kickstart(req, res) {
@@ -34,7 +34,7 @@ let Api = {
                             case 'MESSAGESENT':
                                 Api.parseMessage(messages)
                                 break
-                            case 'ROOMDEACTIVATED':
+                            default:
                                 break
                         }
                     }
@@ -72,7 +72,9 @@ let Api = {
         //let attachmentName = data[0].payload.messageSent.message.attachments.name
         //console.log('AttachmentName: ' + attachmentName)
         let streamId = data[0].payload.messageSent.message.stream.streamId
-        console.log('Message: ' + streamId)
+        console.log('StreamId: ' + streamId)
+        let streamType = data[0].payload.messageSent.message.stream.streamType
+        console.log('StreamType: ' + streamType)
         let template = ''
 
         // Remove the XML tags to get the text typed
@@ -80,10 +82,8 @@ let Api = {
         message = message.replace('</p>', '')
         message = message.replace('</div>', '')
         console.log(message)
-        //var AdRegex = /\/create\s(.+)\/group(.+)(?<=\S)\s+$/gi;
-        var AdRegex = /(\/create)\s(.+)\s(\/group)\s(.+)/gi;
-        // (\/create)\s(.+)\s(\/group)\s(.+)    create\s(.+)(?<=\S)\s\/group(.+)(?<=\S)$
-        if (message.match('/help')) {
+
+        if ((message.match('/help')) && streamType == 'IM') {
             template = `<messageML><div>`
             template += `
           <span class="tempo-text-color--theme-accent"><b>Create Symphony chat room using Active Directory</b></span>
@@ -137,40 +137,41 @@ let Api = {
                 }
 
                 // Create chat room
-                try {
-                    api.message.v4.send(streamId, '<messageML>Attempting to create chat room <b>' + roomName + '</b></messageML>')
-                    roomID = await api.room.v3.create(roomName, "Created by Roombot", [{
-                        "key": "group",
-                        "value": groupName
-                    }], false, true, false, false, false, false, true)
-                    console.log(roomID)
-                } catch (err) {
-                    console.log(err)
-                    api.message.v4.send(streamId, '<messageML><span class="tempo-text-color--red"><b>Error:</b> The name <b>' + roomName + '</b> is too similar to one that is already in use. Please choose another name.</span></messageML>')
-                    return
-                }
-
-                // Promote bot initiator as owner of the room
-                await api.room.addMember(roomID.roomSystemInfo.id, userId)
-                await api.room.promoteOwner(roomID.roomSystemInfo.id, userId)
-
-                // Loop through Active Directory Group users and them to the room
-                try {
-                    for (var i = 0; i < members.length; i++) {
-                        var member = members[i];
-                        // Lookup userID from email value
-                        console.log(member.mail);
-                        const memberUserId = await api.user.lookup({
-                            email: member.mail
-                        })
-                        console.log(memberUserId.id)
-                        // Add userID to chat room
-                        await api.room.addMember(roomID.roomSystemInfo.id, memberUserId.id)
+                if (members.length > 0) {
+                    try {
+                        api.message.v4.send(streamId, '<messageML>Attempting to create chat room <b>' + roomName + '</b></messageML>')
+                        roomID = await api.room.v3.create(roomName, "Created by Roombot", [{
+                            "key": "group",
+                            "value": groupName
+                        }], false, true, false, false, false, false, true)
+                        console.log(roomID)
+                    } catch (err) {
+                        console.log(err)
+                        api.message.v4.send(streamId, '<messageML><span class="tempo-text-color--red"><b>Error:</b> The name <b>' + roomName + '</b> is too similar to one that is already in use. Please choose another name.</span></messageML>')
+                        return
                     }
 
-                    // Response after room creation & No errors
-                    template = `<messageML><div>`
-                    template += `
+                    // Promote bot initiator as owner of the room
+                    await api.room.addMember(roomID.roomSystemInfo.id, userId)
+                    await api.room.promoteOwner(roomID.roomSystemInfo.id, userId)
+
+                    // Loop through Active Directory Group users and them to the room
+                    try {
+                        for (var i = 0; i < members.length; i++) {
+                            var member = members[i];
+                            // Lookup userID from email value
+                            console.log(member.mail);
+                            const memberUserId = await api.user.lookup({
+                                email: member.mail
+                            })
+                            console.log(memberUserId.id)
+                            // Add userID to chat room
+                            await api.room.addMember(roomID.roomSystemInfo.id, memberUserId.id)
+                        }
+
+                        // Response after room creation & No errors
+                        template = `<messageML><div>`
+                        template += `
                           <card accent="tempo-bg-color--theme-accent" iconSrc="https://sup-lab.symphony.com/vinay/c4af4e637d41970201bd5de34142e942.png">
                           <header><span class="tempo-text-color--theme-accent"><b>Room Provisioning Report - Completed Successfully</b></span></header>
                           <body>
@@ -180,25 +181,27 @@ let Api = {
                             <p><span class="tempo-text-color--theme-accent"><b>Room Members</b></span></p>
                             <p>We added <span class="tempo-text-color--theme-accent"><b>${members.length}</b></span> user(s) to the room.</p>
                         `
-                    template += '</body></card></div></messageML>'
-                    template = template.replace(/&/g, 'and')
-                    api.message.v4.send(streamId, template)
+                        template += '</body></card></div></messageML>'
+                        template = template.replace(/&/g, 'and')
+                        api.message.v4.send(streamId, template)
+                        //Clear out Array
+                        members.length = 0;
 
-                    //api.message.v4.send(streamId, '<messageML>Room provisioning completed.</messageML>')
-                } catch (err) {
-                    console.log("Error" + err)
-                    err = JSON.parse(err)
-                    api.message.v4.send(streamId, `<messageML>${err.message}</messageML>`)
-                    console.log(err)
-                    return
+                    } catch (err) {
+                        console.log("Error" + err)
+                        err = JSON.parse(err)
+                        api.message.v4.send(streamId, `<messageML>${err.message}</messageML>`)
+                        console.log(err)
+                        return
+                    }
+                } else {
+                    api.message.v4.send(streamId, '<messageML><span class="tempo-text-color--red"><b>Error:</b> Could not create room <b>' + roomName + '</b> as the Active Directory group  has no users.</span></messageML>')
                 }
             }
         }
 
         // Room creation using CSV File
-        //var emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-
-        if (attachments && attachments[0].name.match("csv")) {
+        if (attachments && attachments[0].name.match("csv") && streamType == 'IM') {
             let attachmentName = data[0].payload.messageSent.message.attachments.name
             console.log("Detected CSV file upload.  Creating room using CSV file.")
             let csvUser = [];
@@ -326,7 +329,7 @@ let Api = {
 
                                     // Response after room creation & Unknown Symphony Users
                                 } else if ((unknownUser.length > 0) && (csvUserBad.length <= 0)) {
-                                    console.log(unknownUser.length)
+                                    //console.log(unknownUser.length)
                                     let roomMemberCount = csvUser.length - unknownUser.length
                                     template = `<messageML><div>`
                                     template += `
@@ -387,6 +390,11 @@ let Api = {
                                     template = template.replace(/&/g, 'and')
                                     api.message.v4.send(streamId, template)
                                 }
+                                //Clear out Array
+                                csvUser.length = 0;
+                                csvUserBad.length = 0;
+                                unknownUser.length = 0;
+
                             } catch (err) {
                                 //If we hit a failure condition when creating the chat room
                                 api.message.v4.send(streamId, '<messageML><span class="tempo-text-color--red"><b>Error:</b> Could not create room <b>' + roomName + '</b><br></br>' + err.message + '</span></messageML>')
@@ -395,7 +403,6 @@ let Api = {
                                 return
                             }
                         }
-
                     });
             } catch (err) {
                 console.log(err)
@@ -405,11 +412,11 @@ let Api = {
         }
 
         // Room creation using EML File
-        if (attachments && attachments[0].name.match("eml")) {
+        if (attachments && attachments[0].name.match("eml") && streamType == 'IM') {
             let attachmentName = data[0].payload.messageSent.message.attachments.name
             console.log("Detected EML file upload.  Creating room using EML file.")
             let emlMember = [];
-            let csvUserBad = [];
+            //let csvUserBad = [];
 
             // Retrieve EML file attachment
             try {
@@ -421,12 +428,11 @@ let Api = {
                 mailparser.write(eml);
                 mailparser.end();
                 mailparser.on("end", async function(email) {
-                    console.log("From :", email.headers.from);
-                    console.log("To :", email.headers.to);
-                    console.log("CC :", email.headers.cc);
-                    console.log("Subject:", email.subject);
-                    console.log("Text body:", email.text);
-
+                    // console.log("From :", email.headers.from);
+                    // console.log("To :", email.headers.to);
+                    // console.log("CC :", email.headers.cc);
+                    // console.log("Subject:", email.subject);
+                    // console.log("Text body:", email.text);
                     console.log("Processed EML File");
 
                     // Concatenate Email headers to obtain Email Addresses
@@ -588,6 +594,9 @@ let Api = {
                                 template = template.replace(/&/g, 'and')
                                 api.message.v4.send(streamId, template)
                             }
+                            //Clear out Array
+                            emlMember.length = 0;
+                            unknownUser.length = 0;
                         } catch (err) {
                             //If we hit a failure condition when creating the chat room
                             api.message.v4.send(streamId, '<messageML><span class="tempo-text-color--red"><b>Error:</b> Created the room <b>' + roomName + '</b> but there were errors adding the room members.<br></br>' + err.message + '</span></messageML>')

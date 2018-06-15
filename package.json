@@ -1,12 +1,12 @@
 {
   "name": "symphony-roomzilla-bot",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Symphony Roomzilla Bot",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
+    "start": "node --max-old-space-size=1024 src/index.js",
     "docker": "docker build -t symphony-room-bot . && docker tag symphony-room-bot gcr.io/teleo-191718/symphony-room-bot && gcloud docker -- push gcr.io/teleo-191718/symphony-room-bot",
     "kube": "kubectl run symphony-room-bot --image=gcr.io/teleo-191718/symphony-room-bot --port 4001",
     "expose": "kubectl expose deployment/symphony-room-bot --target-port=4001 --type=LoadBalancer"
@@ -30,9 +30,9 @@
     "mailparser": "^2.2.0",
     "mailparser-mit": "^0.6.2",
     "moment": "^2.18.1",
-    "nodemon": "^1.10.0",
+    "nodemon": "^1.17.5",
     "q-flat": "^1.0.6",
-    "request": "^2.74.0",
+    "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "ssl-root-cas": "^1.2.3",
     "symphony-api-jeff-modified": "~0.11.3"
