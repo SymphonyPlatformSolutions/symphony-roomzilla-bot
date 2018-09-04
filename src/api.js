@@ -14,6 +14,7 @@ let authenticated = false
 let TempDataStore = {};
 var emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/; // used for CSV parsing
 var AdRegex = /(\/create)\s(.+)\s(\/group)\s(.+)/gi;
+var AdUpdateRegex = /(\/groupadd)\s(.+)|(\/groupremove)\s(.+)/gi;
 
 let Api = {
     async kickstart(req, res) {
@@ -116,7 +117,7 @@ let Api = {
 
         // Room creation using Active Directory
         // RegEx to check if message is for Room Creation using AD then extract information
-        if (message.match(AdRegex)) {
+        else if (message.match(AdRegex) && streamType == 'IM') {
             var match = AdRegex.exec(message);
             console.log('Room Name: ' + match[2]);
             console.log('AD Group Name: ' + match[4]);
@@ -201,7 +202,7 @@ let Api = {
         }
 
         // Room creation using CSV File
-        if (attachments && attachments[0].name.match("csv") && streamType == 'IM') {
+        else if (attachments && attachments[0].name.match("csv") && streamType == 'IM') {
             let attachmentName = data[0].payload.messageSent.message.attachments.name
             console.log("Detected CSV file upload.  Creating room using CSV file.")
             let csvUser = [];
@@ -412,7 +413,7 @@ let Api = {
         }
 
         // Room creation using EML File
-        if (attachments && attachments[0].name.match("eml") && streamType == 'IM') {
+        else if (attachments && attachments[0].name.match("eml") && streamType == 'IM') {
             let attachmentName = data[0].payload.messageSent.message.attachments.name
             console.log("Detected EML file upload.  Creating room using EML file.")
             let emlMember = [];
