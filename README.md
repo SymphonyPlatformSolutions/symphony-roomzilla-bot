@@ -26,9 +26,11 @@ __Create Symphony chat room using Active Directory__
 /removeusers AD Group
 ```
 
+
 __Create Symphony chat room using a CSV file__
   - Drag and drop a CSV file of users you would like to create the room with.
   - Type the Room Name you would like to use and hit return.
+
 
 __Create Symphony chat room using an EML file__
   - Drag and drop an email with users you would like to create the room with.
@@ -45,7 +47,7 @@ vinay@domain.com,owner
 ## Configuration
 Before launching the bot you will need to configure the following files for your own environment.
 
-### Symphony Configuration**
+### Symphony Configuration
 You will need to edit the below file so it includes API endpoint information for your own Pod environment.
 ``` bash
   src/config/config.js
@@ -80,6 +82,7 @@ Update the following to match your environment,
   module.exports = config
 ```
 
+
 Below is further information regarding each of the configuration values,
 
  | Value              | Description                                        |
@@ -113,6 +116,7 @@ Update the following to match your environment,
       },
   }
 ```
+
 
 Below is further information regarding each of the configuration values,
 
