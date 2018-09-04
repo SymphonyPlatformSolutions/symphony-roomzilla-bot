@@ -35,6 +35,6 @@
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "ssl-root-cas": "^1.2.3",
-    "symphony-api-jeff-modified": "~0.11.3"
+    "symphony-api-jeff-modified": "~0.14.1"
   }
 }
