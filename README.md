@@ -80,17 +80,17 @@ Update the following to match your environment,
 ```
 
 Below is further information regarding each of the configuration values,
-| Value              | Description                                        |
-| ------------------ | -------------------------------------------------- |
-| keyUrl             | FQDN for your KeyManager Authentication Endpoint   |
-| sessionUrl         | FQDN for your Pod SessionAuthentication Endpoint   |
-| agentUrl           | FQDN for your Agent Endpoint                       |
-| podUrl             | FQDN of your Symphony Pod                          |
-| CERT_FILE_PATH     | File name and location for your Certificate file   |
-| CERT_KEY_FILE_PATH | File name and location for Certificate Private Key |
-| CERT_PASSPHRASE    | Password to access your Certificate Private Key    |
-| USERNAME           | Symphony Service Account login name for the bot    |
-| PASSWORD           | _this field is not in use_
+ | Value              | Description                                        |
+ | ------------------ | -------------------------------------------------- |
+ | keyUrl             | FQDN for your KeyManager Authentication Endpoint   |
+ | sessionUrl         | FQDN for your Pod SessionAuthentication Endpoint   |
+ | agentUrl           | FQDN for your Agent Endpoint                       |
+ | podUrl             | FQDN of your Symphony Pod                          |
+ | CERT_FILE_PATH     | File name and location for your Certificate file   |
+ | CERT_KEY_FILE_PATH | File name and location for Certificate Private Key |
+ | CERT_PASSPHRASE    | Password to access your Certificate Private Key    |
+ | USERNAME           | Symphony Service Account login name for the bot    |
+ | PASSWORD           | _this field is not in use_
 
 ### Active Directory Configuration
 You will need to create an Active Directory user account with read access to your LDAP directory.  This is so the bot can search for users and groups when creating rooms.  Please edit the below configuration file so it has the correct credentials,
@@ -113,13 +113,13 @@ Update the following to match your environment,
 ```
 
 Below is further information regarding each of the configuration values,
-| Value      | Description                                                |
-| ---------- | ---------------------------------------------------------- |
-| url        | FQDN or IP to connect to your Active Directory Server      |    
-| baseDN     | Directory base location for searching for users            |
-| username   | Name of the Active Directory account the bot will use      |
-| password   | Password for the Active Directory account the bot will use |
-| attributes | Active Directory fields that will be returned in searches  |
+ | Value      | Description                                                |
+ | ---------- | ---------------------------------------------------------- |
+ | url        | FQDN or IP to connect to your Active Directory Server      |    
+ | baseDN     | Directory base location for searching for users            |
+ | username   | Name of the Active Directory account the bot will use      |
+ | password   | Password for the Active Directory account the bot will use |
+ | attributes | Active Directory fields that will be returned in searches  |
 
 ## Starting and Stopping the Bot
 To start the bot application you can use the following command,
