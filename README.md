@@ -12,10 +12,10 @@ A JavaScript bot to manage room creation and population using either:
 ```
 
 ## Usage
-Create Symphony chat room using Active Directory
+__Create Symphony chat room using Active Directory__
   - Create a new chat room populated with a group of users
 ``` bash
-/create _RoomName_ /group _AD Group_
+/create RoomName /group AD_GroupName
 ```
   - Add a group of users to an existing chatroom
 ``` bash
@@ -25,28 +25,30 @@ Create Symphony chat room using Active Directory
 ``` bash
 /removeusers AD Group
 ```
-Create Symphony chat room using a CSV file
+__Create Symphony chat room using a CSV file__
   - Drag and drop a CSV file of users you would like to create the room with.
   - Type the Room Name you would like to use and hit return.
 
-Create Symphony chat room using an EML file
+__Create Symphony chat room using an EML file__
   - Drag and drop an email with users you would like to create the room with.
   - Type the Room Name you would like to use and hit return.
 
 Please ensure your CSV file is formatted correctly and ends with a .csv extension. Below is an example template you can copy:
 ``` bash
-  emailAddress,memberType
-  john@domain.com,owner
-  anne@domain.com,
-  vinay@domain.com,owner
+emailAddress,memberType
+john@domain.com,owner
+anne@domain.com,
+vinay@domain.com,owner
 ```
 
 ## Configuration
 Before launching the bot you will need to configure the following files for your own environment.
 
-**Symphony Configuration**
+### Symphony Configuration**
 You will need to edit the below file so it includes API endpoint information for your own Pod environment.
+``` bash
   src/config/config.js
+```
 
 Update the following to match your environment,
 ``` js
@@ -78,19 +80,19 @@ Update the following to match your environment,
 ```
 
 Below is further information regarding each of the configuration values,
-Value              | Description                                        |
------------------- | -------------------------------------------------- |
-keyUrl             | FQDN for your KeyManager Authentication Endpoint   |
-sessionUrl         | FQDN for your Pod SessionAuthentication Endpoint   |
-agentUrl           | FQDN for your Agent Endpoint                       |
-podUrl             | FQDN of your Symphony Pod                          |
-CERT_FILE_PATH     | File name and location for your Certificate file   |
-CERT_KEY_FILE_PATH | File name and location for Certificate Private Key |
-CERT_PASSPHRASE    | Password to access your Certificate Private Key    |
-USERNAME           | Symphony Service Account login name for the bot    |
-PASSWORD           | _this field is not in use_
+| Value              | Description                                        |
+| ------------------ | -------------------------------------------------- |
+| keyUrl             | FQDN for your KeyManager Authentication Endpoint   |
+| sessionUrl         | FQDN for your Pod SessionAuthentication Endpoint   |
+| agentUrl           | FQDN for your Agent Endpoint                       |
+| podUrl             | FQDN of your Symphony Pod                          |
+| CERT_FILE_PATH     | File name and location for your Certificate file   |
+| CERT_KEY_FILE_PATH | File name and location for Certificate Private Key |
+| CERT_PASSPHRASE    | Password to access your Certificate Private Key    |
+| USERNAME           | Symphony Service Account login name for the bot    |
+| PASSWORD           | _this field is not in use_
 
-**Active Directory Configuration**
+### Active Directory Configuration
 You will need to create an Active Directory user account with read access to your LDAP directory.  This is so the bot can search for users and groups when creating rooms.  Please edit the below configuration file so it has the correct credentials,
 ``` bash
   src/api/ldapAPI.js
@@ -111,15 +113,15 @@ Update the following to match your environment,
 ```
 
 Below is further information regarding each of the configuration values,
-Value      | Description                                                |
----------- | ---------------------------------------------------------- |
-url        | FQDN or IP to connect to your Active Directory Server      |    
-baseDN     | Directory base location for searching for users            |
-username   | Name of the Active Directory account the bot will use      |
-password   | Password for the Active Directory account the bot will use |
-attributes | Active Directory fields that will be returned in searches  |
+| Value      | Description                                                |
+| ---------- | ---------------------------------------------------------- |
+| url        | FQDN or IP to connect to your Active Directory Server      |    
+| baseDN     | Directory base location for searching for users            |
+| username   | Name of the Active Directory account the bot will use      |
+| password   | Password for the Active Directory account the bot will use |
+| attributes | Active Directory fields that will be returned in searches  |
 
-**Starting and Stopping the Bot**
+## Starting and Stopping the Bot
 To start the bot application you can use the following command,
 ``` bash
   $ [sudo] npm start
