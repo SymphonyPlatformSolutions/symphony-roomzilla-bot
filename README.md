@@ -25,6 +25,7 @@ __Create Symphony chat room using Active Directory__
 ``` bash
 /removeusers AD Group
 ```
+
 __Create Symphony chat room using a CSV file__
   - Drag and drop a CSV file of users you would like to create the room with.
   - Type the Room Name you would like to use and hit return.
@@ -80,6 +81,7 @@ Update the following to match your environment,
 ```
 
 Below is further information regarding each of the configuration values,
+
  | Value              | Description                                        |
  | ------------------ | -------------------------------------------------- |
  | keyUrl             | FQDN for your KeyManager Authentication Endpoint   |
@@ -113,6 +115,7 @@ Update the following to match your environment,
 ```
 
 Below is further information regarding each of the configuration values,
+
  | Value      | Description                                                |
  | ---------- | ---------------------------------------------------------- |
  | url        | FQDN or IP to connect to your Active Directory Server      |    
