@@ -88,7 +88,7 @@ let Api = {
             template = `<messageML><div>`
             template += `
           <span class="tempo-text-color--theme-accent"><b>Create Symphony chat room using Active Directory</b></span>
-          <p><b>Note:</b> Please ensure you use the brackets to contain your RoomName and AD Group information.</p>
+          
           <ul>
             <li><b>/create</b> <i>RoomName</i> <b>/group</b> <i>AD Group</i> -- Create a new chat room populated with a group of users</li>
             <li><b>/addusers</b> <i>AD Group</i> -- Add a group of users to an existing chatroom</li>
