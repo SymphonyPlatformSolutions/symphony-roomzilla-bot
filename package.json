@@ -1,6 +1,6 @@
 {
   "name": "symphony-roomzilla-bot",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Symphony Roomzilla Bot",
   "main": "index.js",
   "scripts": {
@@ -19,22 +19,15 @@
     "activedirectory": "~0.7.2",
     "atob": "^2.1.0",
     "body-parser": "^1.17.2",
-    "csvtojson": "^1.1.9",
-    "dotenv": "^4.0.0",
-    "emailjs-mime-parser": "^2.0.5",
+    "csvtojson": "^2.0.8",
+    "dotenv": "^6.0.0",
     "express": "^4.14.0",
     "fast-csv": "^2.4.1",
-    "forever": "^0.15.2",
-    "fs": "0.0.2",
-    "https": "^1.0.0",
-    "mailparser": "^2.2.0",
     "mailparser-mit": "^0.6.2",
     "moment": "^2.18.1",
     "nodemon": "^1.17.5",
-    "q-flat": "^1.0.6",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
-    "ssl-root-cas": "^1.2.3",
     "symphony-api-jeff-modified": "~0.14.1"
   }
 }
