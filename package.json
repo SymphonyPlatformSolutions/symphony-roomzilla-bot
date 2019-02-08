@@ -28,6 +28,6 @@
     "nodemon": "^1.17.5",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
-    "symphony-api-jeff-modified": "~0.14.1"
+    "symphony-api-client-node": "^0.1.4"
   }
 }
