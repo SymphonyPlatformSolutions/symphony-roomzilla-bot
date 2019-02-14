@@ -1,4 +1,6 @@
-var ActiveDirectory = require('activedirectory');
+const ActiveDirectory = require('activedirectory')
+const Q = require('kew')
+
 var config = {
     url: 'ldap://52.212.185.168',
     baseDN: 'cn=users,dc=testdomain,dc=net',
@@ -9,20 +11,19 @@ var config = {
     },
 }
 
-var ldap = {};
-
 var ad = new ActiveDirectory(config);
 
-async function getUsersForGroup(groupName) {
-    return new Promise(resolve => {
-        ad.getUsersForGroup(groupName, function(err, users) {
-            if (err) {
-                console.log('ERROR: ' + JSON.stringify(err));
-                return (err);
-            }
-            resolve(JSON.stringify(users))
-        })
-    });
+function getUsersForGroup(groupName) {
+    var defer = Q.defer()
+    ad.getUsersForGroup(groupName, function(err, users) {
+        if (err) {
+            console.log('ERROR: ' + JSON.stringify(err));
+            return (err);
+        }
+        defer.resolve(JSON.stringify(users))
+        console.log('Users :', users)
+    })
+    return defer.promise
 }
 
 module.exports = getUsersForGroup;
