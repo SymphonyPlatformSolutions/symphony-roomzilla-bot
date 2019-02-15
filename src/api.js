@@ -13,7 +13,7 @@ var AdRegex = /(\/create)\s(.+)\s(\/group)\s(.+)/gi
 
 let Api = {
   async init () {
-    Symphony.setDebugMode(true)
+    Symphony.setDebugMode(false)
     Symphony.initBot(__dirname + '/config/config.json')
       .then((symAuth) => {
         Symphony.getDatafeedEventsService(Api.parseMessage)
@@ -56,32 +56,36 @@ let Api = {
               if (members.length > 0) {
                 try {
                   Symphony.sendMessage(streamId, '<messageML>Attempting to create chat room <b>' + roomName + '</b></messageML>', null, Symphony.MESSAGEML_FORMAT)
-                  console.log('[DEBUG] Room Name: ' + roomName)
-                  Symphony.createRoom(roomName, 'Created by Roombot', [{ 'key': 'group', 'value': groupName }], false, true, false, false, false, false, true).then((roomId) => {
+                  Symphony.createRoom(roomName, 'Created by Roombot', [{
+                    'key': 'group',
+                    'value': groupName
+                  }], false, true, false, false, false, false, true).then((roomId) => {
                     console.log('[DEBUG] New Room: ' + roomId.roomSystemInfo.id)
                     console.log('[DEBUG] Add User to Room: ' + userId)
-                    Symphony.addMemberToRoom(roomId.roomSystemInfo.id, userId)
-                    console.log('[DEBUG] Promote User to Room Owner')
-                    Symphony.promoteUserToOwner(roomId.roomSystemInfo.id, userId)
-                    // Loop through Active Directory Group users and them to the room
-                    try {
-                      for (var i = 0; i < members.length; i++) {
-                        var member = members[i]
-                        // Lookup userID from email value
-                        console.log(member.mail)
-                        Symphony.getUserFromEmail(member.mail).then((memberUserId) => {
-                          console.log(memberUserId.id)
-                          // Add userID to chat room
-                          Symphony.addMemberToRoom(roomID.roomSystemInfo.id, memberUserId.id)
-                        })
-                      }
-                      // Response after room creation & No errors
-                      Symphony.sendMessage(streamId, 'wohoo', null, Symphony.PRESENTATION_FORMAT)
-                      // Clear out Array
-                      members.length = 0
-                    } catch (err) {
-                      console.log(err)
-                    }
+                    Symphony.addMemberToRoom(roomId.roomSystemInfo.id, userId).then(() => {
+                      console.log('[DEBUG] Promote User to Room Owner: ' + userId)
+                      Symphony.promoteUserToOwner(roomId.roomSystemInfo.id, userId).then(() => {
+                        // Loop through Active Directory Group users and them to the room
+                        try {
+                          for (var i = 0; i < members.length; i++) {
+                            var member = members[i]
+                            // Lookup userID from email value
+                            console.log('[DEBUG] Member Email: ', member.mail)
+                            Symphony.getUserFromEmail(member.mail).then((memberUserId) => {
+                              console.log('[DEBUG] Member userId: ', memberUserId.id)
+                              // Add userID to chat room
+                              Symphony.addMemberToRoom(roomId.roomSystemInfo.id, memberUserId.id)
+                            })
+                          }
+                          // Response after room creation & No errors
+                          Symphony.sendMessage(streamId, 'wohoo', null, Symphony.MESSAGEML_FORMAT)
+                          // Clear out Array
+                          members.length = 0
+                        } catch (err) {
+                          console.log(err)
+                        }
+                      })
+                    })
                   })
                 } catch (err) {
                   console.log(err)
@@ -94,7 +98,7 @@ let Api = {
             })
           } catch (err) {
             console.log('Error: No such Group', err)
-            Symphony.sendMessage(streamId, 'no group', null, Symphony.PRESENTATION_FORMAT)
+            Symphony.sendMessage(streamId, 'no group', null, Symphony.MESSAGEML_FORMAT)
           }
         }
       }
