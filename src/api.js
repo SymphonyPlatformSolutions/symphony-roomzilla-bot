@@ -44,17 +44,18 @@ let Api = {
         let roomName = match[2]
         let groupName = match[4]
         if (roomName) {
-          let roomID
+          // let roomID
           // Look up users from Active Directory Group
           try {
             console.log('[DEBUG] Retrieving Active Directory Users')
             getUsersFromGroupName(groupName).then((users) => {
               var members = JSON.parse(users)
               console.log('[DEBUG] Members: ', members.length)
-              Symphony.sendMessage(streamId, 'Retrieved <b> ' + members.length + '</b> users from the Active Directory group <b>' + groupName + '</b>', null, Symphony.MESSAGEML_FORMAT)
+              // Symphony.sendMessage(streamId, 'Retrieved <b> ' + members.length + '</b> users from the Active Directory group <b>' + groupName + '</b>', null, Symphony.MESSAGEML_FORMAT)
 
               if (members.length > 0) {
                 try {
+                  Symphony.sendMessage(streamId, 'Retrieved <b> ' + members.length + '</b> users from the Active Directory group <b>' + groupName + '</b>', null, Symphony.MESSAGEML_FORMAT)
                   Symphony.sendMessage(streamId, '<messageML>Attempting to create chat room <b>' + roomName + '</b></messageML>', null, Symphony.MESSAGEML_FORMAT)
                   Symphony.createRoom(roomName, 'Created by Roombot', [{
                     'key': 'group',
@@ -78,7 +79,7 @@ let Api = {
                             })
                           }
                           // Response after room creation & No errors
-                          Symphony.sendMessage(streamId, 'wohoo', null, Symphony.MESSAGEML_FORMAT)
+                          Symphony.sendMessage(streamId, 'need to send after job completion', null, Symphony.MESSAGEML_FORMAT)
                           // Clear out Array
                           members.length = 0
                         } catch (err) {
@@ -93,11 +94,11 @@ let Api = {
                 }
               } else {
                 console.log('Error: Empty Group')
-                Symphony.sendMessage(streamId, '<messageML><span class="tempo-text-color--red"><b>Error:</b> Could not create room <b>' + roomName + '</b> as the Active Directory group  has no users.</span></messageML>', null, Symphony.PRESENTATION_FORMAT)
+                Symphony.sendMessage(streamId, 'uh oh empty room' + roomName, null, Symphony.MESSAGEML_FORMAT)
               }
             })
           } catch (err) {
-            console.log('Error: No such Group', err)
+            console.log('NOT WORKING Error: No such Group', err)
             Symphony.sendMessage(streamId, 'no group', null, Symphony.MESSAGEML_FORMAT)
           }
         }
