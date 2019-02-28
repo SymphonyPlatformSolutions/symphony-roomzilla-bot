@@ -1,4 +1,5 @@
 var template = {}
+let roomName
 
 // Help Message
 template.help = `
@@ -25,15 +26,6 @@ template.help = `
         <p><code>emailAddress,memberType\njohn@domain.com,owner\nanne@domain.com,\nvinay@domain.com,owner\n</code></p>`
 
 // Active Directory - Success
-template.activeDirectory = `
-<card accent="tempo-bg-color--theme-accent" iconSrc="https://sup-lab.symphony.com/vinay/c4af4e637d41970201bd5de34142e942.png">
-    <header><span class="tempo-text-color--theme-accent"><b>Room Provisioning Report - Completed Successfully</b></span></header>
-    <body>
-    <br></br>
-    <p>Your room <span class="tempo-text-color--theme-accent"><b>${roomName}</b></span> was created successfully.</p>\n\n
-    <br></br>
-    <p><span class="tempo-text-color--theme-accent"><b>Room Members</b></span></p>
-    <p>We added <span class="tempo-text-color--theme-accent"><b>${members.length}</b></span> user(s) to the room.</p>
-    </body></card></div>`
+template.activeDirectory = `Room name ${roomName}`
 
 module.exports = template
