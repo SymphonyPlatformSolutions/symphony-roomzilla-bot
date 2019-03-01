@@ -6,6 +6,7 @@ const atob = require('atob')
 const csv = require('fast-csv')
 const MailParser = require('mailparser-mit').MailParser
 
+let msg = ''
 let TempDataStore = {}
 var emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/ // used for CSV parsing
 var AdRegex = /(\/create)\s(.+)\s(\/group)\s(.+)/gi
@@ -90,9 +91,9 @@ let Api = {
                 await Symphony.addMemberToRoom(roomId.roomSystemInfo.id, memberUserId.id)
               }
               // Response after room creation & No errors
-              // template.activeDirectory = template.activeDirectory.replace(/&/g, 'and')
-              console.log('********* MessageML: ' + template.activeDirectory)
-              Symphony.sendMessage(streamId, template.activeDirectory, null, Symphony.MESSAGEML_FORMAT)
+              msg = template.activeDirectory(roomName, members)
+              msg = msg.replace(/&/g, 'and')
+              Symphony.sendMessage(streamId, msg, null, Symphony.MESSAGEML_FORMAT)
               // Clear out Array
               members.length = 0
             } catch (err) {
@@ -205,13 +206,17 @@ let Api = {
                   // Response after room creation & Unknown Symphony Users & Malformed Emails
                   if ((unknownUser.length > 0) && (csvUserBad.length > 0)) {
                     let roomMemberCount = csvUser.length - unknownUser.length
-                    Symphony.sendMessage(streamId, roomName + roomMemberCount + unknownUser.length + csvUserBad.length, null, Symphony.MESSAGEML_FORMAT)
+                    msg = template.csvUknownAndBadUser(roomName, roomMemberCount, unknownUser, csvUserBad)
+                    msg = msg.replace(/&/g, 'and')
+                    Symphony.sendMessage(streamId, msg, null, Symphony.MESSAGEML_FORMAT)
 
                   // Response after room creation & Unknown Symphony Users
                   } else if ((unknownUser.length > 0) && (csvUserBad.length <= 0)) {
                   // console.log(unknownUser.length)
                     let roomMemberCount = csvUser.length - unknownUser.length
-                    Symphony.sendMessage(streamId, roomName + roomMemberCount + unknownUser.length, null, Symphony.MESSAGEML_FORMAT)
+                    msg = template.csvUnknownUser(roomName, roomMemberCount, unknownUser)
+                    msg = msg.replace(/&/g, 'and')
+                    Symphony.sendMessage(streamId, msg, null, Symphony.MESSAGEML_FORMAT)
 
                   // Response after room creation & Malformed Emails
                   } else if ((unknownUser.length <= 0) && (csvUserBad.length > 0)) {
