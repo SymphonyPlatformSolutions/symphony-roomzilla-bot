@@ -17,15 +17,6 @@ __Create Symphony chat room using Active Directory__
 ``` bash
 /create RoomName /group AD_GroupName
 ```
-  - Add a group of users to an existing chatroom
-``` bash
-/addusers AD Group
-```
-  - Remove a group of users to an existing chatroom
-``` bash
-/removeusers AD Group
-```
-
 
 __Create Symphony chat room using a CSV file__
   - Drag and drop a CSV file of users you would like to create the room with.
@@ -55,31 +46,27 @@ You will need to edit the below file so it includes API endpoint information for
 
 Update the following to match your environment,
 ``` js
-  let config = {
-    urls: {
-      keyUrl: 'https://mypod.symphony.com/keyauth',
-      sessionUrl: 'https://mypod.symphony.com/sessionauth',
-      agentUrl: 'https://mypod.symphony.com/agent',
-      podUrl: 'https://mypod.symphony.com/pod'
-    },
+{
+      "sessionAuthHost": "podDomain-api.symphony.com",
+      "sessionAuthPort": 8444,
+      "keyAuthHost": "podDomain.symphony.com",
+      "keyAuthPort": 8444,
+      "podHost": "podDomain.symphony.com",
+      "podPort": 443,
+      "agentHost": "podDomain.symphony.com",
+      "agentPort": 443,
+      "botCertPath": "PATH",
+      "botCertName": "BOT-CERT-NAME",
+      "botCertPassword": "BOT-PASSWORD",
+      "botEmailAddress": "BOT-EMAIL-ADDRESS",
+      "appCertPath": "",
+      "appCertName": "",
+      "appCertPassword": "",
+      "proxyURL": "",
+      "proxyUsername": "",
+      "proxyPassword": ""
+    }
 
-    tokens: {},
-
-    CERT_FILE_PATH: './certs/bot.user1-cert.pem',
-    CERT_KEY_FILE_PATH: './certs/bot.user1-key.pem',
-    CERT_PASSPHRASE: 'mypassword',
-
-    USERNAME: 'bot.user1',
-    PASSWORD: 'mypassword',
-
-    SESSION_TOKEN: '',
-    KM_TOKEN: '',
-
-    BOT_ID: '',
-    STREAM_ID: ''
-  }
-
-  module.exports = config
 ```
 
 
@@ -87,15 +74,14 @@ Below is further information regarding each of the configuration values,
 
  | Value              | Description                                        |
  | ------------------ | -------------------------------------------------- |
- | keyUrl             | FQDN for your KeyManager Authentication Endpoint   |
- | sessionUrl         | FQDN for your Pod SessionAuthentication Endpoint   |
- | agentUrl           | FQDN for your Agent Endpoint                       |
- | podUrl             | FQDN of your Symphony Pod                          |
- | CERT_FILE_PATH     | File name and location for your Certificate file   |
- | CERT_KEY_FILE_PATH | File name and location for Certificate Private Key |
- | CERT_PASSPHRASE    | Password to access your Certificate Private Key    |
- | USERNAME           | Symphony Service Account login name for the bot    |
- | PASSWORD           | _this field is not in use_
+ | keyAuthHost        | FQDN for your KeyManager Authentication Endpoint   |
+ | sessionAuthHost    | FQDN for your Pod SessionAuthentication Endpoint   |
+ | agentHost          | FQDN for your Agent Endpoint                       |
+ | podHost            | FQDN of your Symphony Pod                          |
+ | botCertName        | File name for your Certificate file                |
+ | botCertPath        | Location for Certificate Private Key               |
+ | botCertPassword    | Password to access your Certificate Private Key    |
+
 
 ### Active Directory Configuration
 You will need to create an Active Directory user account with read access to your LDAP directory.  This is so the bot can search for users and groups when creating rooms.  Please edit the below configuration file so it has the correct credentials,
