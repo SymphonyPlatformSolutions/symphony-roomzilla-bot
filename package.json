@@ -1,34 +1,27 @@
 {
   "name": "symphony-roomzilla-bot",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Symphony Roomzilla Bot",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.js",
-    "start": "node --max-old-space-size=1024 src/index.js",
-    "docker": "docker build -t symphony-room-bot . && docker tag symphony-room-bot gcr.io/teleo-191718/symphony-room-bot && gcloud docker -- push gcr.io/teleo-191718/symphony-room-bot",
-    "kube": "kubectl run symphony-room-bot --image=gcr.io/teleo-191718/symphony-room-bot --port 4001",
-    "expose": "kubectl expose deployment/symphony-room-bot --target-port=4001 --type=LoadBalancer"
+    "start": "node src/index.js"
   },
   "engines": {
     "node": ">=7.6"
   },
   "author": "Vinay Mistry - Symphony Platform Solutions",
+  "license": "Symphony License",
   "dependencies": {
     "activedirectory": "~0.7.2",
     "atob": "^2.1.0",
     "body-parser": "^1.17.2",
-    "csvtojson": "^2.0.8",
-    "dotenv": "^6.0.0",
     "express": "^4.14.0",
     "fast-csv": "^2.4.1",
-    "kew": "^0.7.0",
     "mailparser-mit": "^0.6.2",
-    "moment": "^2.18.1",
     "nodemon": "^1.17.5",
-    "request": "^2.87.0",
-    "request-promise": "^4.2.2",
-    "symphony-api-client-node": "file:../symphony-api-client-node"
-  }
+    "symphony-api-client-node": "^0.1.4"
+  },
+  "repository": "https://github.com/SymphonyPlatformSolutions/symphony-roomzilla-bot"
 }

@@ -1,7 +1,7 @@
 // Import Api
 const Api = require('./api')
 
-// Libraries
+// Import External Libraries
 const bodyParser = require('body-parser')
 const express = require('express')
 
@@ -13,7 +13,7 @@ app.use(bodyParser.json())
 
 app.listen(PORT, () => {
   console.log('*****************************')
-  console.log('** Bot is Active with HTTP **')
+  console.log('**      Bot is Active      **')
   console.log('*****************************')
   Api.init()
 })

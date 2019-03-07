@@ -21,7 +21,6 @@ function getUsersForGroup(groupName) {
             return (err);
         }
         defer.resolve(JSON.stringify(users))
-        console.log('Users :', users)
     })
     return defer.promise
 }
