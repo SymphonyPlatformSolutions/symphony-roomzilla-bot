@@ -45,6 +45,7 @@ let Api = {
       // Room creation using Active Directory
       // RegEx to check if message is for Room Creation using AD then extract information
       else if (messageText.match(AdRegex) && streamType === 'IM') {
+        console.log('Detected Active Directory room creation request.')
         var match = AdRegex.exec(messageText)
         var roomName = match[2]
         var groupName = match[4]
