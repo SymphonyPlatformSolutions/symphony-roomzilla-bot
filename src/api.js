@@ -6,6 +6,7 @@ const atob = require('atob')
 const csv = require('fast-csv')
 const MailParser = require('mailparser-mit').MailParser
 // Declare some variables
+let maxlimit = 100 // Maximum room members
 let msg = ''
 let memberUserId = {}
 var emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/ // used for CSV parsing
@@ -62,7 +63,7 @@ let Api = {
             return
           }
           // Create chat room
-          if (members.length > 0) {
+          if (members.length > 0 && members.length < maxlimit) {
             try {
               Symphony.sendMessage(streamId, '<messageML>Attempting to create chat room <b>' + roomName + '</b></messageML>', null, Symphony.MESSAGEML_FORMAT)
               roomId = await Symphony.createRoom(roomName, 'Created by Roombot', [{
@@ -96,8 +97,10 @@ let Api = {
             } catch (err) {
               Symphony.sendMessage(streamId, '<span class="tempo-text-color--red"><b>ERROR:</b><b>' + err + '</span>', null, Symphony.MESSAGEML_FORMAT)
             }
-          } else {
+          } else if (members.length === 0) {
             Symphony.sendMessage(streamId, '<span class="tempo-text-color--red"><b>ERROR:</b> Could not create room <b>' + roomName + '</b> as the Active Directory group  has no users.</span>', null, Symphony.MESSAGEML_FORMAT)
+          } else if (members.length > maxlimit) {
+            Symphony.sendMessage(streamId, '<span class="tempo-text-color--red"><b>ERROR:</b> Could not create room <b>' + roomName + '</b> as your Admin has set a maximum limit of ' + maxlimit + ' users in a room.</span>', null, Symphony.MESSAGEML_FORMAT)
           }
         }
       }
@@ -136,7 +139,7 @@ let Api = {
             .on('end', async function () {
               // Create Room with name from message
               let roomName = message.messageText
-              if (roomName && (csvUser.length > 0)) {
+              if (roomName && (csvUser.length > 0 && csvUser.length < maxlimit)) {
                 let roomId
                 try {
                   Symphony.sendMessage(streamId, 'Attempting to create chat room <b>' + roomName + '</b>', null, Symphony.MESSAGEML_FORMAT)
@@ -220,6 +223,8 @@ let Api = {
                 // If we hit a failure condition when creating the chat room
                   Symphony.sendMessage(streamId, '<span class="tempo-text-color--red"><b>ERROR:</b> Could not create room <b>' + roomName + '</b><br></br>' + err.message + '</span>', null, Symphony.MESSAGEML_FORMAT)
                 }
+              } else if (csvUser.length > maxlimit) {
+                Symphony.sendMessage(streamId, '<span class="tempo-text-color--red"><b>ERROR:</b> Could not create room <b>' + roomName + '</b> as your Admin has set a maximum limit of ' + maxlimit + ' users in a room.</span>', null, Symphony.MESSAGEML_FORMAT)
               }
             })
         } catch (err) {
