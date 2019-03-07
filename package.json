@@ -8,11 +8,6 @@
     "dev": "nodemon src/index.js",
     "start": "node src/index.js"
   },
-  "engines": {
-    "node": ">=7.6"
-  },
-  "author": "Vinay Mistry - Symphony Platform Solutions",
-  "license": "Symphony License",
   "dependencies": {
     "activedirectory": "~0.7.2",
     "atob": "^2.1.0",
@@ -23,5 +18,20 @@
     "nodemon": "^1.17.5",
     "symphony-api-client-node": "^0.1.4"
   },
-  "repository": "https://github.com/SymphonyPlatformSolutions/symphony-roomzilla-bot"
+  "engines": {
+    "node": "6.10.3 < 11.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SymphonyPlatformSolutions/symphony-roomzilla-bot"
+  },
+  "keywords": [
+    "node",
+    "symphony-roombot"
+  ],
+  "author": "Symphony Platform Solutions",
+  "contributors": [
+    "Vinay Mistry <vinay.mistry@symphony.com>"
+  ],
+  "license": "Symphony Licence"
 }
