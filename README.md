@@ -41,7 +41,7 @@ Before launching the bot you will need to configure the following files for your
 ### Symphony Configuration
 You will need to edit the below file so it includes API endpoint information for your own Pod environment.
 ``` bash
-  src/config/config.js
+  src/config/config.json
 ```
 
 Update the following to match your environment,
@@ -123,4 +123,10 @@ To start the bot application you can use the following command,
 To stop the bot application you use the following command,
 ``` bash
   $ [sudo] npm stop
+```
+
+## Message Templates
+The following folder has the formatting and templates for response messages and reports for room creation.  You can modify this according to your requirements.
+``` bash
+  src/lib/template.js
 ```
