@@ -130,3 +130,14 @@ The following folder has the formatting and templates for response messages and 
 ``` bash
   src/lib/template.js
 ```
+
+## Room Member Limits
+A configuration setting has been included in the below file to allow the administrator to set the maximum members that are allowed when creating a room.
+``` bash
+  src/api.js
+```
+
+The value you need to update is show here.  Update this to your preferred room size limit,
+``` js
+  let maxlimit = 100 // Maximum room members
+```
