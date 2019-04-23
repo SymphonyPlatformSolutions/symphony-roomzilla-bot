@@ -5,7 +5,7 @@ var config = {
   url: 'ldap://1.1.1.1',
   baseDN: 'cn=users,dc=testdomain,dc=net',
   username: 'Sync User',
-  password: 'mypassword',
+  password: 'Welcome123!',
   attributes: {
     user: ['sAMAccountName', 'mail', 'displayName']
   }
