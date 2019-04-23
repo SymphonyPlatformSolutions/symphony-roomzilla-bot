@@ -1,6 +1,6 @@
 {
   "name": "symphony-roomzilla-bot",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "Symphony Roomzilla Bot",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "symphony-api-client-node": "^1.0.3"
   },
   "engines": {
-    "node": "8.11.2"
+    "node": ">=8.0.0 <10.0.0"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
   ],
   "author": "Symphony Platform Solutions",
   "contributors": [
-    "Vinay Mistry <vinay.mistry@symphony.com>"
+    "Vinay Mistry <vinay@symphony.com>"
   ],
   "license": "Symphony Licence"
 }
