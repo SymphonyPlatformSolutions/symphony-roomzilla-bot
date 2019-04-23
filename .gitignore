@@ -1,5 +1,6 @@
 node_modules/
 certs/
+rsa/
 src/api/ldapAPI.js
 src/config/config.json
 .env
