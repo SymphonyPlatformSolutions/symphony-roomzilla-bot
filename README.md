@@ -6,6 +6,11 @@ A JavaScript bot to manage room creation and population using either:
   - Email File (EML)
 
 ## Installation
+The below are pre-requisites for installation:
+  - CentOS 7+
+  - Node Package Manager (npm)
+
+## Installation
 
 ``` bash
   $ [sudo] npm install
