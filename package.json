@@ -1,6 +1,6 @@
 {
   "name": "symphony-roomzilla-bot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Symphony Roomzilla Bot",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "fast-csv": "^2.4.1",
     "mailparser-mit": "^0.6.2",
     "nodemon": "^1.17.5",
-    "symphony-api-client-node": "^1.0.4"
+    "symphony-api-client-node": "^1.0.8"
   },
   "engines": {
     "node": ">=8.0.0 <10.0.0"
