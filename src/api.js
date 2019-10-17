@@ -14,7 +14,7 @@ var AdRegex = /(\/create)\s(.+)\s(\/group)\s(.+)/gi
 // Start the Bot
 let Api = {
   async init () {
-    Symphony.setDebugMode(false)
+    Symphony.setDebugMode(true)
     Symphony.initBot(__dirname + '/config/config.json')
       .then((symAuth) => {
         Symphony.getDatafeedEventsService(Api.parseMessage)
