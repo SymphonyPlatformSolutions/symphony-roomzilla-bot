@@ -20,7 +20,7 @@ template.help = `
   </ol>
   <br/>
   <p>Please ensure your CSV file is formatted correctly and ends with a .csv extension.  Below is an example template you can copy:</p>
-  <p><code>emailAddress,memberType\njohn@domain.com,owner\nanne@domain.com,\nvinay@domain.com,owner\n</code></p>
+  <p><code>emailAddress,memberType\njohn@domain.com,owner\nanne@domain.com,\nvinay@domain.com,owner</code></p>
 </div>`
 
 // Response after room creation & No errors

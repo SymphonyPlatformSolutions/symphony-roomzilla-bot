@@ -52,26 +52,30 @@ You will need to edit the below file so it includes API endpoint information for
 Update the following to match your environment,
 ``` js
 {
-      "sessionAuthHost": "podDomain-api.symphony.com",
-      "sessionAuthPort": 8444,
-      "keyAuthHost": "podDomain.symphony.com",
-      "keyAuthPort": 8444,
-      "podHost": "podDomain.symphony.com",
-      "podPort": 443,
-      "agentHost": "podDomain.symphony.com",
-      "agentPort": 443,
-      "botCertPath": "PATH",
-      "botCertName": "BOT-CERT-NAME",
-      "botCertPassword": "BOT-PASSWORD",
-      "botEmailAddress": "BOT-EMAIL-ADDRESS",
-      "appCertPath": "",
-      "appCertName": "",
-      "appCertPassword": "",
-      "proxyURL": "",
-      "proxyUsername": "",
-      "proxyPassword": ""
-    }
-
+    "sessionAuthHost": "podDomain.symphony.com",
+    "sessionAuthPort": 443,
+    "keyAuthHost": "podDomain.symphony.com",
+    "keyAuthPort": 443,
+    "podHost": "podDomain.symphony.com",
+    "podPort": 443,
+    "agentHost": "podDomain.symphony.com",
+    "agentPort": 443,
+    "authType": "rsa",
+    "botCertPath": "",
+    "botCertName": "",
+    "botCertPassword": "",
+    "botPrivateKeyPath": "rsa/",
+    "botPrivateKeyName": "rsa-private-key.pem",
+    "botUsername": "bot.username",
+    "botEmailAddress": "bot.username@example.com",
+    "appCertPath": "",
+    "appCertName": "",
+    "appCertPassword": "",
+    "proxyURL": "",
+    "proxyUsername": "",
+    "proxyPassword": "",
+    "authTokenRefreshPeriod": "30"
+}
 ```
 
 
@@ -83,9 +87,10 @@ Below is further information regarding each of the configuration values,
  | sessionAuthHost    | FQDN for your Pod SessionAuthentication Endpoint   |
  | agentHost          | FQDN for your Agent Endpoint                       |
  | podHost            | FQDN of your Symphony Pod                          |
- | botCertName        | File name for your Certificate file                |
- | botCertPath        | Location for Certificate Private Key               |
- | botCertPassword    | Password to access your Certificate Private Key    |
+ | botPrivateKeyName  | File name for your RSA PrivateKey file             |
+ | botPrivateKeyPath  | Location for RSA Private Key                       |
+ | botUsername        | Service Account Username for your Bot              |
+ | botEmailAddress    | Email Address for your Bot Service Account         |
 
 
 ### Active Directory Configuration
@@ -146,3 +151,12 @@ The value you need to update is show here.  Update this to your preferred room s
 ``` js
   let maxlimit = 100 // Maximum room members
 ```
+
+# Release Notes
+## 1.0.1
+- Updated LICENCE information to be Apache 2.0 compliant.
+- Updated Symphony Node SDK Client version to latest, 1.0.11
+- Updated package.json to include latest versions of package dependencies.
+
+## 1.0.0
+- Initial Bot Release
