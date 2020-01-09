@@ -1,4 +1,4 @@
-const ActiveDirectory = require('activedirectory')
+const ActiveDirectory = require('activedirectory2')
 const Q = require('kew')
 
 var config = {
