@@ -10,13 +10,13 @@
   },
   "dependencies": {
     "activedirectory": "~0.7.2",
-    "atob": "^2.1.0",
-    "body-parser": "^1.17.2",
-    "express": "^4.14.0",
-    "fast-csv": "^2.4.1",
-    "mailparser-mit": "^0.6.2",
-    "nodemon": "^1.17.5",
-    "symphony-api-client-node": "^1.0.8"
+    "atob": "^2.1.2",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "fast-csv": "^3.4.0",
+    "mailparser-mit": "^1.0.0",
+    "nodemon": "^1.19.4",
+    "symphony-api-client-node": "^1.0.11"
   },
   "engines": {
     "node": ">=8.0.0 <10.0.0"
@@ -33,5 +33,5 @@
   "contributors": [
     "Vinay Mistry <vinay@symphony.com>"
   ],
-  "license": "Symphony Licence"
+  "license": "Apache-2.0"
 }
